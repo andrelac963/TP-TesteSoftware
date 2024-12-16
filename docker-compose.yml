@@ -1,0 +1,83 @@
+services:
+  db_base:
+    container_name: ${DB_CONTAINER_NAME}
+    image: postgres:${DB_VERSION}
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    ports:
+      - "${DB_PORT}:5432"
+    networks:
+      - api-network
+    volumes:
+      - ./db:/var/lib/postgresql/data
+    restart: ${RESTART_POLICY}
+
+  api_base:
+    container_name: ${API_CONTAINER_NAME}
+    image: ${API_IMAGE_NAME}
+    environment:
+      - DB_URL=postgresql://${DB_USER}:${DB_PASSWORD}@${DB_CONTAINER_NAME}:${DB_PORT}/${DB_NAME}?schema=public
+    build:
+      context: .
+      dockerfile: api.dockerfile
+      args:
+        - NODE_VERSION=${NODE_VERSION}
+    ports:
+      - "${API_PORT}:${API_PORT}"
+    networks:
+      - api-network
+      - client-network
+    depends_on:
+      - db_base
+    restart: ${RESTART_POLICY}
+    command: npm run dev
+
+  client_base:
+    container_name: ${CLIENT_CONTAINER_NAME}
+    image: ${CLIENT_IMAGE_NAME}
+    environment:
+      - VITE_API_URL=http://${API_CONTAINER_NAME}:${API_PORT}
+    build:
+      context: .
+      dockerfile: client.dockerfile
+      args:
+        - NODE_VERSION=${NODE_VERSION}
+        - NGINX_VERSION=${NGINX_VERSION}
+    ports:
+      - "${CLIENT_PORT}:80"
+    depends_on:
+      - api_base
+    networks:
+      - client-network
+      - nginx-network
+    restart: ${RESTART_POLICY}
+    command: nginx -g 'daemon off;'
+
+  nginx_base:
+    container_name: ${NGINX_CONTAINER_NAME}
+    image: ${NGINX_IMAGE_NAME}
+    build:
+      context: .
+      dockerfile: nginx.dockerfile
+      args:
+        - NGINX_VERSION=${NGINX_VERSION}
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/letsencrypt:/etc/nginx/letsencrypt
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/sites-available:/etc/nginx/sites-available
+    depends_on:
+      - client_base
+    networks:
+      - nginx-network
+    restart: ${RESTART_POLICY}
+    command: nginx -g 'daemon off;'
+
+networks:
+  api-network:
+  client-network:
+  nginx-network:

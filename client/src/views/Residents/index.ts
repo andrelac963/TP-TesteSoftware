@@ -1,0 +1,1 @@
+export * from "./Residents.tsx";
