@@ -1,8 +1,13 @@
 import React, { useState } from "react";
 import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
-import { Button } from "@mui/material";
-import { ModalContent, ModalTitle } from "./CreateApartmentModal.styles";
+import { Button, IconButton } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import {
+  ModalContent,
+  Header,
+  ModalTitle,
+} from "./CreateApartmentModal.styles";
 
 interface CreateApartmentModalProps {
   open: boolean;
@@ -13,7 +18,6 @@ interface CreateApartmentModalProps {
     cleaningPeriod: number
   ) => void;
 }
-
 export const CreateApartmentModal: React.FC<CreateApartmentModalProps> = ({
   open,
   onClose,
@@ -34,7 +38,12 @@ export const CreateApartmentModal: React.FC<CreateApartmentModalProps> = ({
   return (
     <Modal open={open} onClose={onClose}>
       <ModalContent>
-        <ModalTitle>Adicionar Novo Apartamento</ModalTitle>
+        <Header>
+          <IconButton onClick={onClose} data-testid="close-button" style={{ alignSelf: "flex-end", padding: 0, marginTop: "-16px", marginRight: "-16px" }}>
+            <CloseIcon />
+          </IconButton>
+          <ModalTitle>Adicionar Novo Apartamento</ModalTitle>
+        </Header>
         <TextField
           label="Nome"
           value={name}

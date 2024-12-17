@@ -2,6 +2,7 @@ import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { CreateApartmentModal } from "./CreateApartmentModal";
 import { ThemeProvider } from "../../styles/ThemeProvider";
+
 describe("CreateApartmentModal", () => {
   const onClose = jest.fn();
   const onCreate = jest.fn();
@@ -53,12 +54,14 @@ describe("CreateApartmentModal", () => {
     expect(onClose).toHaveBeenCalledTimes(1);
   });
 
-  test("calls onClose when clicking outside the modal", () => {
+  test("calls onClose when clicking the close icon", () => {
     renderWithTheme(
       <CreateApartmentModal open={true} onClose={onClose} onCreate={onCreate} />
     );
 
-    fireEvent.mouseDown(document);
+    const closeButton = screen.getByTestId("close-button");
+    fireEvent.click(closeButton);
+
     expect(onClose).toHaveBeenCalledTimes(1);
   });
 

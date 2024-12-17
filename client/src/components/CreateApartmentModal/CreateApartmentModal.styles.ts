@@ -13,6 +13,13 @@ export const ModalContent = styled(Box)`
   border-radius: 8px;
 `;
 
+export const Header = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+`;
+
 export const ModalTitle = styled.h2`
   margin-bottom: 16px;
 `;

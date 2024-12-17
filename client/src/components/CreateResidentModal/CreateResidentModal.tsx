@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import { ModalContent, ModalTitle } from "./CreateResidentModal.styles";
+import { Button, IconButton } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import { ModalContent, Header, ModalTitle } from "./CreateResidentModal.styles";
 import { MenuItem, Select } from "@mui/material";
 
 interface CreateResidentModalProps {
@@ -37,7 +38,22 @@ export const CreateResidentModal: React.FC<CreateResidentModalProps> = ({
   return (
     <Modal open={open} onClose={onClose}>
       <ModalContent>
-        <ModalTitle>Adicionar Novo Residente</ModalTitle>
+        <Header>
+          <IconButton
+            onClick={onClose}
+            data-testid="close-button"
+            style={{
+              alignSelf: "flex-end",
+              padding: 0,
+              marginTop: "-16px",
+              marginRight: "-16px",
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+          <ModalTitle>Adicionar Novo Residente</ModalTitle>
+        </Header>
+
         <TextField
           label="Nome"
           value={name}
@@ -50,6 +66,7 @@ export const CreateResidentModal: React.FC<CreateResidentModalProps> = ({
           value={cleaningOrder}
           onChange={(e) => setCleaningOrder(e.target.value as number)}
           fullWidth
+          inputProps={{ "data-testid": "cleaning-order-select" }}
         >
           {Array.from({ length: maxCleaningOrder }, (_, i) => i + 1).map(
             (option) => (
