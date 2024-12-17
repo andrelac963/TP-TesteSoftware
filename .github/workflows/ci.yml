@@ -10,11 +10,10 @@ on:
 
 jobs:
   test:
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
-        node-version: [16.x]
+        node-version: [22.x]
 
     steps:
       - name: Checkout repository
@@ -25,17 +24,36 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Install dependencies
+      - name: Install dependencies for API
+        working-directory: ./api
         run: npm install
 
-      - name: Run tests and collect coverage
+      - name: Run tests and collect coverage for API
+        working-directory: ./api
         run: npm run test:cov
 
-      - name: Upload coverage to Codecov
+      - name: Install dependencies for Client
+        working-directory: ./client
+        run: npm install
+
+      - name: Run tests and collect coverage for Client
+        working-directory: ./client
+        run: npm run test:cov
+
+      - name: Upload coverage to Codecov for API
         uses: codecov/codecov-action@v3
         with:
           token: db84ca09-f0b6-4e0f-8b74-991d766f8558
-          files: ./coverage/lcov.info
-          flags: unittests
-          name: codecov-umbrella
+          files: ./api/coverage/lcov.info
+          flags: api-unittests
+          name: codecov-api
+          fail_ci_if_error: true
+
+      - name: Upload coverage to Codecov for Client
+        uses: codecov/codecov-action@v3
+        with:
+          token: db84ca09-f0b6-4e0f-8b74-991d766f8558
+          files: ./client/coverage/lcov.info
+          flags: client-unittests
+          name: codecov-client
           fail_ci_if_error: true
