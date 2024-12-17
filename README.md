@@ -3,10 +3,11 @@ Trabalho prático de Teste de Software
 
 Grupo: André Luiz Alves Costa
 
+## Fase 1:
 1. O link projeto no GitHub: https://github.com/andrelac963/TP-TesteSoftware.git
 2. O link do último commit no GitHub: https://github.com/andrelac963/TP-TesteSoftware/commit/086a15ce421ca95eea3c470fd60c951d90df242c
-3. O link do último build com sucesso do GitHub Actions: 
-4. O link do Codecov do sistema:
+3. O link do último build com sucesso do GitHub Actions: https://github.com/andrelac963/TP-TesteSoftware/actions/runs/12383136147
+4. O link do Codecov do sistema: https://app.codecov.io/gh/andrelac963/TP-TesteSoftware
 
 # Como executar o projeto
 
