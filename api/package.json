@@ -9,7 +9,7 @@
     "prisma:migrate": "npx prisma migrate dev",
     "prisma:generate": "npx prisma generate",
     "test": "jest --testPathIgnorePatterns=integration",
-    "test:cov": "jest --coverage",
+    "test:cov": "jest --coverage --testPathIgnorePatterns=integration",
     "test:integration": "jest --testPathPattern=integration"
   },
   "keywords": [],
