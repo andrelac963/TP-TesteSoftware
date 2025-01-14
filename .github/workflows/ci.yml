@@ -28,17 +28,25 @@ jobs:
         working-directory: ./api
         run: npm install
 
-      - name: Run tests and collect coverage for API
+      - name: Run unit tests and collect coverage for API
         working-directory: ./api
         run: npm run test:cov
+
+      - name: Run integration tests for API
+        working-directory: ./api
+        run: npm run test:integration
 
       - name: Install dependencies for Client
         working-directory: ./client
         run: npm install
 
-      - name: Run tests and collect coverage for Client
+      - name: Run unit tests and collect coverage for Client
         working-directory: ./client
         run: npm run test:cov
+
+      - name: Run integration tests for Client
+        working-directory: ./client
+        run: npm run test:integration
 
       - name: Upload coverage to Codecov for API
         uses: codecov/codecov-action@v3
