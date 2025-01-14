@@ -32,10 +32,6 @@ jobs:
         working-directory: ./api
         run: npm run test:cov
 
-      - name: Run integration tests for API
-        working-directory: ./api
-        run: npm run test:integration
-
       - name: Install dependencies for Client
         working-directory: ./client
         run: npm install

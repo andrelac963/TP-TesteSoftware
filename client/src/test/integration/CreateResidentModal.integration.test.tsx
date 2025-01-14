@@ -28,7 +28,8 @@ describe("CreateResidentModal Integration", () => {
     );
 
     expect(screen.getByLabelText("Nome")).toBeInTheDocument();
-    expect(screen.getByLabelText("Ordem de Limpeza")).toBeInTheDocument();
+    const cleaningOrderSelect = screen.getByTestId("cleaning-order-select");
+    expect(cleaningOrderSelect).toBeInTheDocument();
     expect(screen.getByText("Adicionar Novo Residente")).toBeInTheDocument();
   });
 
@@ -45,9 +46,11 @@ describe("CreateResidentModal Integration", () => {
     fireEvent.change(screen.getByLabelText("Nome"), {
       target: { value: "John Doe" },
     });
-    fireEvent.change(screen.getByLabelText("Ordem de Limpeza"), {
-      target: { value: 1 },
-    });
+
+    const cleaningOrderSelect = screen.getByTestId("cleaning-order-select");
+
+    fireEvent.change(cleaningOrderSelect, { target: { value: "1" } });
+
     fireEvent.click(screen.getByRole("button", { name: /criar residente/i }));
 
     expect(onCreate).toHaveBeenCalledWith("John Doe", 1);
